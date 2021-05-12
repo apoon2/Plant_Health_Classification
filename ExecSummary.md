@@ -63,7 +63,7 @@ After image processing, an initial CNN model was built to classify whether plant
 | flatten (Flatten)                   | (None, 246,016)       | 0 
 | dense (Dense)                       | (None, 64)            | 15,745,088 
 | dense_1 (Dense)                     | (None, 1)             | 65 
- 
+
 The best score with minimal overfitting was in epoch 4 with a train accuracy of 78% and test accuracy of 73%.
 
 #### Optimized: CNN with Reddit images 
@@ -77,7 +77,7 @@ Additional CNN models were trained with the Reddit images included. Four differe
 | 3      | 4 (16 filters)       | 1 (128 nodes) | 85%                 | 80% 
 | 4      | 3 (32 filters)       | 1 (32 nodes)  | 84%                 | 80% 
 
-The best score with minimal overfitting was from model 2 with a train accuracy of 82% and test accuracy of 80%.
+The best score with minimal overfitting was from model 2 with a train accuracy of 82% and test accuracy of 80%. With additional nodes in the dense layer, the model becomes increasingly overfit. Increasing the filters also has a similar effect of overfitting the model with no improvement in test accuracy.
 
 #### Final: YOLOv4 object detection
 
@@ -92,32 +92,28 @@ The parameters used for the model were:
 - classes = 2
 - filters = 21
 
-Below is a quick summary showing the mAP (mean average precision) of every 1000 weights.
+Below is a performance summary showing the mAP (mean average precision) of every 1000 weights, as well as the AP (average precision) of each class, precision, recall, and F1-score.
 
-| Weights  | mAP   
-|---       |---      
-| 1000     |81%  
-| 2000     |82%    
-| 3000     |83% 
-| 4000     |82% 
-| 5000     |81%
-| 6000     |80% 
+| Weights  | mAP    | healthy AP | unhealthy AP | Precision | Recall | F1-score
+|---       |---     |---         |---           |---        |---     |---
+| 1000     |84.01%  |81.57%      | 86.46%       |83%        |80%     |81%
+| 2000     |82.60%  |81.01%      | 84.19%       |83%        |80%     |81% 
+| 3000     |83.35%  |81.55%      | 85.14%       |86%        |82%     |84%
+| 4000     |82.73%  |81.51%      | 83.94%       |88%        |82%     |85%
+| 5000     |81.60%  |80.70%      | 82.49%       |86%        |78%     |82%
+| 6000     |80.24%  |79.45%      | 81.04%       |84%        |78%     |81%
 
-The first 3000 weights had the highest mAP, with the scores decreasing after that. In general, the mAPs don't change much every thousand weights.
-
-### Streamlit App
-
-xxx
+The 1000 weights had the highest mAP followed by 3000 weights, however the mAPs do not change much with every thousand weights. Every thousand weights had higher AP on the unhealthy class, minimized false negatives, and optimized for precision.
 
 ### Summary
 
-For the YOLO model, based on the mAP staying relatively flat from iteration to iteration, it seems that the model has capped in terms of performance. Typically for YOLO models, mAPs increase significantly in the first couple thousand iterations and then plateaus in the next few thousand iterations. For this particular dataset, it makes sense that the model capped around low 80% given that it can sometimes be difficult to distinguish unhealthy plants from healthy ones, even for humans. The reason for this is because of all the different types of plants available, where a unhealthy characteristic of one plant might not be for another. An example of this is for some plants their leaves naturally grow downwards but it could be mistaken as wilted and therefore unhealthy by the model.
+Based on the mAP staying relatively flat with every thousand weights, it seems that the YOLO model has capped in terms of performance. Typically for YOLO models, mAPs increase significantly in the first couple thousand iterations and then plateaus in the next few thousand iterations. For this particular dataset, it makes sense that the model capped around low 80% given that it can sometimes be difficult to distinguish unhealthy plants from healthy ones, even for humans. The reason for this is because of all the different types of plants available, where a unhealthy characteristic of one plant might not be for another. An example of this is for some plants their leaves naturally grow downwards but it could be mistaken as wilted and therefore unhealthy by the model.
 
-When compared to the optimized CNN model, the best YOLO model is also just slightly more accurate (83% vs 80%). For reasons stated above in terms difficulty in classifying plant health, it seems like the different model type did not impact performance much either. The benefit of YOLO however is the ability to detect in real-time as compared to CNN. For demonstration purposes, the YOLO 3000 weights iteration will be used as it gives us the most accurate predictions.
+Similar to YOLO, the CNN model capped around 80% accuracy which is also likely due to the difficulty in classifying plant health for a wide variety of plants. While it seems that YOLO did not have a huge improvement over CNN, the benefit of YOLO is the ability to detect in real-time. For demonstration purposes, the YOLO 3000 weights iteration will be used as it gives us high precision with additional training as opposed to the 1000 weights.
 
 ### Recommendations
 
-* __Immediate Use:__  Demo where users can show plants on a live video feed (via webcam) and the model can predict whether the plant(s) is healthy or not.
-* __Next Steps:__  We do have a few areas we would like to look into in the future:
-    1. __Train on additional plant images:__  As mentioned, the model may confuse a normal characteristic of one plant to be unhealthy on another plant and vice versa. The easiest way to reduce the confusion is to train the model on a wider variety and more images of healthy and unhealthy plants. The immediate next step could be to scrape more images from the r/plantclinic. Additionally, the "real-life" images available on the subreddit would help the model learn better on images that it can expect to receive in real-time.
-    2. __Create mobile app:__  Once the model is optimized, it can be used to create a front-end app where users can use on their mobile phones to help detect whether their plant is healthy or unhealthy. Users can either use their phone cameras to dectect plant health on the spot or set up a webcam and view detections on their phone while they are away. This can be used by people who travel often but still want check in on their plants, and also enables them to know when to ask someone to help care for any plant that needs special attention while they are away.
+* __Immediate Use:__  Demo where users can upload an image and the model can predict whether the plant is healthy or not.
+* __Next Steps:__  
+    1. __Train on additional plant images:__  As mentioned, the model may confuse a normal characteristic of one plant to be unhealthy on another plant and vice versa. The easiest way to potentially reduce the confusion is to train the model on a wider variety and more images of healthy and unhealthy plants. The immediate next step could be to scrape more images from the r/plantclinic. Additionally, the "real-life" images available on the subreddit would help the model learn better on images that it can expect to receive in real-time.
+    2. __Create mobile app:__  Once the model is optimized, it can be used to create a front-end app where users can use to help detect whether their plant is healthy or unhealthy. Users can either use their phone cameras to dectect plant health on the spot or set up a webcam and view detections on their phone while they are away. This can be used by people who travel often but still want check in on their plants, and also enables them to know when to ask someone to help care for any plant that needs special attention while they are away.

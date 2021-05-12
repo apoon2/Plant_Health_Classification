@@ -6,7 +6,7 @@ by Ashley Poon
 
 #### Can we classify whether a plant is healthy or unhealthy using object detection? 
 
-The goal is to help novice plant owners determine if their plants are healthy or need some special attention. If the model is able to accurately classify an unhealthy plant, then users can take the next time to research and determine whether their plants are being over/under watered, recieving too much/too little sunlight, infested, etc. The guiding metric will be accuracy.
+The goal is to help novice plant owners determine if their plants are healthy or need some special attention. If the model is able to accurately classify an unhealthy plant, then users can take the next time to research and determine whether their plants are being over/under watered, recieving too much/too little sunlight, infested, etc. The guiding metric will be accuracy for CNN models and mean average precision for the YOlO model.
 
 ## Repo Contents
     
@@ -37,6 +37,9 @@ The goal is to help novice plant owners determine if their plants are healthy or
             * **yolov4-obj.cfg**: contains model configurations
             * **generate_train.py**: script to create a train.txt file that hold relative paths to all training images
             * **generate_test.py**: script to create a test.txt file that hold relative paths to all test images
+            
+* 5.Visualizations.ipynb
+    * Used to create visualizations for CNN and YOLO model performance.
 
 #### [Click Here for the Executive Summary](ExecSummary.md)
 
