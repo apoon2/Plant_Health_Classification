@@ -16,7 +16,7 @@ Initial models built and trained were CNN models to get a baseline of performanc
 
 Can we classify whether a plant is healthy or unhealthy using object detection?
 
-The goal is to help novice plant owners determine if their plants are healthy or need some special attention. If the model is able to accurately classify an unhealthy plant, then users can take the next time to research and determine whether their plants are being over/under watered, recieving too much/too little sunlight, infested, etc. The guiding metric will be accuracy.
+The goal is to help novice plant owners determine if their plants are healthy or need some special attention. If the model is able to accurately classify an unhealthy plant, then users can take the next step to research and determine whether their plants are being over/under watered, recieving too much/too little sunlight, infested, etc. The guiding metric will be accuracy for CNN models and mean average precision for the YOLO model.
 
 ### Cleaning & Pre-processing
 
@@ -29,11 +29,11 @@ Three different datasets were collected: healthy and diseased crop leaves, healt
 
 **Pre-processing for CNN**
 
-1) For the healthy plant dataset, sampled 500 healthy crop leaf images and 451 houseplant images. 
+1) For the healthy plant dataset, sampled 500 healthy crop leaf images and 451 healthy houseplant images. 
 
-2) For the unhealthy plant dataset, sampled 500 unhealthy crop leaf images, 451 houseplant images, and 314 Reddit images (for CNN models including Reddit data).
+2) For the unhealthy plant dataset, sampled 500 unhealthy crop leaf images, 451 unhealthy houseplant images, and 314 Reddit images (for CNN models including Reddit data).
 
-3) Pre-process images for CNN using load_img to resize image and img_to_array to convert image to array.
+3) Pre-processed images for CNN using load_img to resize each image and img_to_array to convert each image to array.
 
 **Pre-processing for YOLO**
 
@@ -48,7 +48,7 @@ Three different datasets were collected: healthy and diseased crop leaves, healt
 
 #### Baseline:
 
-For the initial CNN model, the images 50/50 healthy and unhealthy. Therefore the baseline accuracy was 50%.
+For the initial CNN model, the images were 50/50 healthy and unhealthy. Therefore the baseline accuracy was 50%.
 
 #### Initial: CNN without Reddit images 
 
@@ -109,11 +109,11 @@ The 1000 weights had the highest mAP followed by 3000 weights, however the mAPs 
 
 Based on the mAP staying relatively flat with every thousand weights, it seems that the YOLO model has capped in terms of performance. Typically for YOLO models, mAPs increase significantly in the first couple thousand iterations and then plateaus in the next few thousand iterations. For this particular dataset, it makes sense that the model capped around low 80% given that it can sometimes be difficult to distinguish unhealthy plants from healthy ones, even for humans. The reason for this is because of all the different types of plants available, where a unhealthy characteristic of one plant might not be for another. An example of this is for some plants their leaves naturally grow downwards but it could be mistaken as wilted and therefore unhealthy by the model.
 
-Similar to YOLO, the CNN model capped around 80% accuracy which is also likely due to the difficulty in classifying plant health for a wide variety of plants. While it seems that YOLO did not have a huge improvement over CNN, the benefit of YOLO is the ability to detect in real-time. For demonstration purposes, the YOLO 3000 weights iteration will be used as it gives us high precision with additional training as opposed to the 1000 weights.
+Similar to YOLO, the CNN model capped around 80% accuracy which is also likely due to the difficulty in classifying plant health for a wide variety of plants. While it seems that YOLO did not have a huge improvement over CNN, the benefit of YOLO is the ability to detect in real-time. For demonstration purposes, the YOLO 3000 weights iteration were used as it gives us high precision with additional training as opposed to the 1000 weights.
 
 ### Recommendations
 
 * __Immediate Use:__  Demo where users can upload an image and the model can predict whether the plant is healthy or not.
 * __Next Steps:__  
-    1. __Train on additional plant images:__  As mentioned, the model may confuse a normal characteristic of one plant to be unhealthy on another plant and vice versa. The easiest way to potentially reduce the confusion is to train the model on a wider variety and more images of healthy and unhealthy plants. The immediate next step could be to scrape more images from the r/plantclinic. Additionally, the "real-life" images available on the subreddit would help the model learn better on images that it can expect to receive in real-time.
-    2. __Create mobile app:__  Once the model is optimized, it can be used to create a front-end app where users can use to help detect whether their plant is healthy or unhealthy. Users can either use their phone cameras to dectect plant health on the spot or set up a webcam and view detections on their phone while they are away. This can be used by people who travel often but still want check in on their plants, and also enables them to know when to ask someone to help care for any plant that needs special attention while they are away.
+    1. __Train on additional plant images:__  As mentioned, the model may confuse a normal characteristic of one plant to be unhealthy on another plant and vice versa. The easiest way to potentially reduce the confusion is to train the model on a wider variety and more images of healthy and unhealthy plants. The immediate next step could be to scrape more images from r/plantclinic. Additionally, the "real-life" images available on the subreddit would help the model learn better on images that it can expect to receive in real-time.
+    2. __Create mobile app:__  Once the model is optimized, it can be used to create a mobile app where users can detect whether their plant is healthy or unhealthy. Users can either use their phone cameras to dectect plant health on the spot or set up a webcam and view detections on their phone while they are away. This can be used by people who travel often but still want the option to check in on their plants.
